@@ -1,0 +1,22 @@
+{
+  "name": "typst",
+  "version": "0.1.0",
+  "api": 1,
+  "code": "typst.wasm",
+  "pages": true,
+  "extensions": ["typ"],
+  "comment": "//",
+  "server": ["tinymist"],
+  "highlights": true,
+  "keys": [{ "keys": "space v", "command": "preview", "what": "to the pages, and back to the file" }],
+  "access": {
+    "project": true,
+    "fonts": true,
+    "cache": true,
+    "read": ["{data}/typst/packages"],
+    "write": ["{cache}/typst/packages"],
+    "network": ["packages.typst.org"],
+    "memory_mb": 4096,
+    "seconds": 120
+  }
+}

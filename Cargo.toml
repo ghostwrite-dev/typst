@@ -1,0 +1,29 @@
+# Typst as a plugin, built for WebAssembly: scripts/build-plugins.sh.
+[package]
+name = "ghostwrite-typst-plugin"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ghostwrite-plugin-api = { path = "../../crates/plugin-api" }
+wit-bindgen = "0.57"
+comemo = "0.5"
+flate2 = "1"
+serde_json = "1"
+tar = "0.4"
+time = "0.3"
+typst = "0.15.1"
+typst-kit = { version = "0.15.1", default-features = false, features = ["datetime", "embedded-fonts", "system-files"] }
+typst-layout = "0.15.1"
+typst-render = "0.15.1"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+strip = true
+
+[workspace]
