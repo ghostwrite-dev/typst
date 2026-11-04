@@ -15,7 +15,7 @@ use std::ops::Range;
 use std::path::{Path, PathBuf};
 use std::sync::{Mutex, OnceLock};
 
-use ghostwrite_plugin_api::{Drawing, Glyph, Page, Plugin, Span, register};
+use ghostwrite_plugin_api::{Drawing, Glyph, Page, Plugin, Region, Span, register};
 use typst::diag::{FileError, FileResult, PackageError, SourceDiagnostic};
 use typst::foundations::{Bytes, Datetime, Duration};
 use typst::layout::{Abs, Frame, FrameItem, Point, Transform};
@@ -275,22 +275,41 @@ impl Compiler {
         format!("{}error: {}", at.unwrap_or_default(), error.message)
     }
 
-    fn draw(&self, key: u128, pixels: u32) -> Option<Drawing> {
+    /// A region of a page: a page of its size, with the whole page on it, moved so
+    /// the region is what's on it.
+    fn draw(&self, key: u128, region: Region) -> Option<Drawing> {
         let (_, page) = self.pages.get(&key)?;
-        let width = page.frame.size().x.to_pt() as f32;
-        let height = page.frame.size().y.to_pt() as f32;
-        let pixel_per_pt = pixels as f32 / width.max(1.);
-        let across = |pt: f32| (pt * pixel_per_pt).ceil().max(1.) as usize;
-        if across(width).saturating_mul(across(height)) > MAX_PIXELS {
+        let (width, height) = (region.width as usize, region.height as usize);
+        if width.saturating_mul(height) > MAX_PIXELS || width == 0 || height == 0 || !(region.scale > 0.) {
             return None;
         }
-        let options = typst_render::RenderOptions { pixel_per_pt: typst::utils::Scalar::new(pixel_per_pt.into()), ..Default::default() };
-        let pixmap = typst_render::render(page, &options);
-        let mut bgra = pixmap.data().to_vec();
+        let scale = f64::from(region.scale);
+        let mut frame = Frame::hard(typst::layout::Size::new(Abs::pt(width as f64 / scale), Abs::pt(height as f64 / scale)));
+        frame.push_frame(Point::new(Abs::pt(-f64::from(region.x) / scale), Abs::pt(-f64::from(region.y) / scale)), page.frame.clone());
+        let mut part = page.clone();
+        part.frame = frame;
+        let options = typst_render::RenderOptions { pixel_per_pt: typst::utils::Scalar::new(scale), ..Default::default() };
+        let pixmap = typst_render::render(&part, &options);
+        // Rounded its own way, it can be a pixel off: exactly the region, then.
+        let mut bgra = vec![0; width * height * 4];
+        let (drawn_width, drawn) = (pixmap.width() as usize, pixmap.data());
+        for row in 0..height.min(pixmap.height() as usize) {
+            let take = width.min(drawn_width) * 4;
+            bgra[row * width * 4..][..take].copy_from_slice(&drawn[row * drawn_width * 4..][..take]);
+        }
         for pixel in bgra.chunks_exact_mut(4) {
             pixel.swap(0, 2);
         }
-        Some(Drawing { width: pixmap.width(), height: pixmap.height(), bgra })
+        // Past the page's edge, see-through: its fill went as far as the region.
+        let (right, bottom) = ((page.frame.width().to_pt() * scale).round() as usize, (page.frame.height().to_pt() * scale).round() as usize);
+        for (row, line) in bgra.chunks_exact_mut(width * 4).enumerate() {
+            for (col, pixel) in line.chunks_exact_mut(4).enumerate() {
+                if region.y as usize + row >= bottom || region.x as usize + col >= right {
+                    pixel.fill(0);
+                }
+            }
+        }
+        Some(Drawing { width: region.width, height: region.height, bgra })
     }
 }
 
@@ -391,9 +410,9 @@ impl Plugin for Typst {
         COMPILER.with(|held| held.borrow_mut().as_mut().ok_or("no file is open".to_string())?.compile(&text))
     }
 
-    fn draw_page(key_high: u64, key_low: u64, pixels: u32) -> Option<Drawing> {
+    fn draw(key_high: u64, key_low: u64, region: Region) -> Option<Drawing> {
         let key = (u128::from(key_high) << 64) | u128::from(key_low);
-        COMPILER.with(|held| held.borrow().as_ref()?.draw(key, pixels))
+        COMPILER.with(|held| held.borrow().as_ref()?.draw(key, region))
     }
 }
 

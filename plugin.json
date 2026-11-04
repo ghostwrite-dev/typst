@@ -6,6 +6,7 @@
   "pages": true,
   "extensions": ["typ"],
   "comment": "//",
+  "pairs": ["$$"],
   "server": ["tinymist"],
   "highlights": true,
   "keys": [{ "keys": "space v", "command": "preview", "what": "to the pages, and back to the file" }],
