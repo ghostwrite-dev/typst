@@ -1,4 +1,4 @@
-# Typst as a plugin, built for WebAssembly: scripts/build-plugins.sh.
+# Typst as a plugin, built for WebAssembly: ghostwrite-dev/plugin-build's build.sh.
 [package]
 name = "ghostwrite-typst-plugin"
 version = "0.1.0"
@@ -9,7 +9,7 @@ publish = false
 crate-type = ["cdylib"]
 
 [dependencies]
-ghostwrite-plugin-api = { path = "../../crates/plugin-api" }
+ghostwrite-plugin-api = { git = "https://github.com/ghostwrite-dev/ghostwrite", tag = "plugin-api-v2.0.0" }
 wit-bindgen = "0.57"
 comemo = "0.5"
 flate2 = "1"

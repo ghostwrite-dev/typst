@@ -631,6 +631,7 @@ dependencies = [
 [[package]]
 name = "ghostwrite-plugin-api"
 version = "0.2.0"
+source = "git+https://github.com/ghostwrite-dev/ghostwrite?tag=plugin-api-v2.0.0#91939af2a14c17ae4c1100dec3e078d0fe7140be"
 dependencies = [
  "wit-bindgen",
 ]
