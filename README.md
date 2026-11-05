@@ -1,7 +1,7 @@
 # Typst for Ghostwrite
 
 A [Ghostwrite](https://github.com/ghostwrite-dev/ghostwrite) plugin for [Typst](https://typst.app):
-`.typ` files, compiled as you type, their pages in a tab (`:preview` or `space v`, and back),
+`.typ` files, compiled as you type, their pages in a view of their own, a tab (`space v` or `:preview`, and back),
 colored by Typst's own syntax, and served by [`tinymist`](https://github.com/Myriad-Dreamin/tinymist)
 if it's on your PATH.
 

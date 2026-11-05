@@ -1,7 +1,7 @@
 # Typst as a plugin, built for WebAssembly: Ghostwrite's scripts/plugin-build.sh.
 [package]
 name = "ghostwrite-typst-plugin"
-version = "1.0.0"
+version = "1.1.0"
 edition = "2024"
 publish = false
 

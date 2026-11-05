@@ -1,15 +1,14 @@
 {
   "name": "typst",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "api": 1,
   "code": "typst.wasm",
-  "pages": true,
+  "views": [{ "name": "pages", "title": "Pages", "shows": "pages", "place": "tab", "key": "space v" }],
   "extensions": ["typ"],
   "comment": "//",
   "pairs": ["$$"],
   "server": ["tinymist"],
   "highlights": true,
-  "keys": [{ "keys": "space v", "command": "preview", "what": "to the pages, and back to the file" }],
   "access": {
     "project": true,
     "fonts": true,
