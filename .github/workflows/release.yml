@@ -1,0 +1,13 @@
+name: release
+# Builds the plugin on every push and pull request, and on a tag v<version> (the
+# version in plugin.json) releases it: <name>-<version>.zip and its .sha256.
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+permissions:
+  contents: write
+jobs:
+  plugin:
+    uses: ghostwrite-dev/plugin-build/.github/workflows/plugin.yml@v1
