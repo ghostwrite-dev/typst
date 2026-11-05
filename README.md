@@ -30,8 +30,8 @@ sh ../plugin-build/build.sh
 ```
 
 That makes `target/plugin/typst`, which `:plugin install target/plugin/typst` installs. It's built
-with Rust 1.97.0, against [`ghostwrite-plugin-api`](https://github.com/ghostwrite-dev/ghostwrite/tree/plugin-api-v2.0.0/crates/plugin-api)
-at the tag `plugin-api-v2.0.0`, and with the versions in `Cargo.lock`.
+with Rust 1.97.0, against [`ghostwrite-plugin-api`](https://github.com/ghostwrite-dev/ghostwrite/tree/plugin-api-v1.0.0/crates/plugin-api)
+at the tag `plugin-api-v1.0.0`, and with the versions in `Cargo.lock`.
 
 ## Releases
 
