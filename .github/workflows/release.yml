@@ -10,4 +10,4 @@ permissions:
   contents: write
 jobs:
   plugin:
-    uses: ghostwrite-dev/plugin-build/.github/workflows/plugin.yml@v1
+    uses: ghostwrite-dev/ghostwrite/.github/workflows/plugin.yml@plugin-api-v1.0.1

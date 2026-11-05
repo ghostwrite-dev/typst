@@ -21,17 +21,17 @@ That installs its latest release.
 
 ## Building
 
-With [plugin-build](https://github.com/ghostwrite-dev/plugin-build)'s `build.sh`:
+With Ghostwrite's [`scripts/plugin-build.sh`](https://github.com/ghostwrite-dev/ghostwrite/blob/plugin-api-v1.0.1/scripts/plugin-build.sh):
 
 ```sh
-git clone https://github.com/ghostwrite-dev/plugin-build ../plugin-build
+git clone --depth 1 --branch plugin-api-v1.0.1 https://github.com/ghostwrite-dev/ghostwrite ../ghostwrite
 rustup target add wasm32-wasip2
-sh ../plugin-build/build.sh
+sh ../ghostwrite/scripts/plugin-build.sh
 ```
 
 That makes `target/plugin/typst`, which `:plugin install target/plugin/typst` installs. It's built
-with Rust 1.97.0, against [`ghostwrite-plugin-api`](https://github.com/ghostwrite-dev/ghostwrite/tree/plugin-api-v1.0.0/crates/plugin-api)
-at the tag `plugin-api-v1.0.0`, and with the versions in `Cargo.lock`.
+with Rust 1.97.0, against [`ghostwrite-plugin-api`](https://github.com/ghostwrite-dev/ghostwrite/tree/plugin-api-v1.0.1/crates/plugin-api)
+at the tag `plugin-api-v1.0.1`, and with the versions in `Cargo.lock`.
 
 ## Releases
 
