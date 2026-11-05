@@ -40,4 +40,4 @@ sha256 in `typst-<version>.zip.sha256`.
 
 ## License
 
-MIT: see [LICENSE](LICENSE).
+Mozilla Public License 2.0: see [LICENSE](LICENSE).
